@@ -1,5 +1,7 @@
 package cn.ddg.api;
 
+import cn.ddg.api.domain.chatgpt.IOpenAI;
+import cn.ddg.api.domain.chatgpt.service.OpenAI;
 import cn.ddg.api.domain.zsxq.IZsxqApi;
 import cn.ddg.api.domain.zsxq.model.aggregates.UnAnsweredQuestionsAggregates;
 import cn.ddg.api.domain.zsxq.model.vo.Topics;
@@ -32,7 +34,11 @@ public class SpringBootRunTest {
     private String groupId;
     @Value("${chatGpt-test.cookie")
     private String cookie;
+    @Value("${chatGpt-test.openAiKey}")
+    private String openAiKey;
 
+    @Resource
+    private IOpenAI openAI;
     @Resource
     private IZsxqApi zsxqApi;
 
@@ -48,13 +54,13 @@ public class SpringBootRunTest {
             logger.info("topicId：{} text：{}", topicId, text);
 
             // 回答问题
-//            zsxqApi.answer(groupId, cookie, topicId, openAI.doChatGPT(openAiKey, text), false);
+            zsxqApi.answer(groupId, cookie, topicId, openAI.doChatGPT(openAiKey, text), false);
         }
     }
 
     @Test
     public void test_openAi() throws IOException {
-//        String response = openAI.doChatGPT(openAiKey, "帮我写一个java冒泡排序");
-//        logger.info("测试结果：{}", response);
+        String response = openAI.doChatGPT(openAiKey, "帮我写一个java冒泡排序");
+        logger.info("测试结果：{}", response);
     }
 }
